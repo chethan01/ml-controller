@@ -265,41 +265,50 @@
         "M1M2", "M1", "M2"
       ];
 
-      // Individual ON/OFF
+      // Only attach event listeners to buttons that exist in the DOM
       relayKeys.forEach(key => {
-        document.getElementById(`${key}-on`).onclick = () => db.ref(key).set(false);
-        document.getElementById(`${key}-off`).onclick = () => db.ref(key).set(true);
+        const btnOn = document.getElementById(`${key}-on`);
+        const btnOff = document.getElementById(`${key}-off`);
+        if (btnOn) btnOn.onclick = () => db.ref(key).set(false);
+        if (btnOff) btnOff.onclick = () => db.ref(key).set(true);
       });
 
       // Group buttons
-      document.getElementById("m1-on").onclick = () => {
+      const m1on = document.getElementById("m1-on");
+      const m1off = document.getElementById("m1-off");
+      const m2on = document.getElementById("m2-on");
+      const m2off = document.getElementById("m2-off");
+      const m1m2on = document.getElementById("m1m2-on");
+      const m1m2off = document.getElementById("m1m2-off");
+
+      if (m1on) m1on.onclick = () => {
         db.ref("M1R").set(false);
         db.ref("M1Y").set(false);
         db.ref("M1B").set(false);
         db.ref("M1").set(false);
       };
-      document.getElementById("m1-off").onclick = () => {
+      if (m1off) m1off.onclick = () => {
         db.ref("M1R").set(true);
         db.ref("M1Y").set(true);
         db.ref("M1B").set(true);
         db.ref("M1").set(true);
       };
-      document.getElementById("m2-on").onclick = () => {
+      if (m2on) m2on.onclick = () => {
         db.ref("M2R").set(false);
         db.ref("M2Y").set(false);
         db.ref("M2B").set(false);
         db.ref("M2").set(false);
       };
-      document.getElementById("m2-off").onclick = () => {
+      if (m2off) m2off.onclick = () => {
         db.ref("M2R").set(true);
         db.ref("M2Y").set(true);
         db.ref("M2B").set(true);
         db.ref("M2").set(true);
       };
-      document.getElementById("m1m2-on").onclick = () => {
+      if (m1m2on) m1m2on.onclick = () => {
         relayKeys.forEach(key => db.ref(key).set(false));
       };
-      document.getElementById("m1m2-off").onclick = () => {
+      if (m1m2off) m1m2off.onclick = () => {
         relayKeys.forEach(key => db.ref(key).set(true));
       };
     }
