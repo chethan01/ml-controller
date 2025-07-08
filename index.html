@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>M & L Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: #556b2f;
+      color: #fff;
+      padding: 12px 0 8px 0;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 0 8px 30px 8px;
+    }
+    .group-btn-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 18px 0 0 0;
+      gap: 10px;
+    }
+    .group-btn {
+      flex: 1;
+      background: #e0e0e0;
+      color: #222;
+      border: none;
+      border-radius: 7px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+      padding: 13px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .group-btn:active {
+      background: #bdbdbd;
+    }
+    .relay-table {
+      width: 100%;
+      margin-top: 18px;
+      border-spacing: 0 10px;
+    }
+    .relay-label {
+      font-weight: bold;
+      font-size: 1.08rem;
+      padding: 0 0 0 8px;
+      border-radius: 6px 0 0 6px;
+      text-align: left;
+      width: 40%;
+    }
+    .relay-label.red {
+      background: #e53935;
+      color: #fff;
+    }
+    .relay-label.yellow {
+      background: #fff700;
+      color: #222;
+    }
+    .relay-label.blue {
+      background: #1e40af;
+      color: #fff;
+    }
+    .relay-btn {
+      width: 60px;
+      padding: 10px 0;
+      margin: 0 7px;
+      border: none;
+      border-radius: 7px;
+      font-size: 1rem;
+      font-weight: bold;
+      background: #e0e0e0;
+      color: #222;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .relay-btn.on {
+      background: #43a047;
+      color: #fff;
+    }
+    .relay-btn.off {
+      background: #d32f2f;
+      color: #fff;
+    }
+    #loginForm {
+      max-width: 400px;
+      margin: 60px auto 20px;
+      background: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: block;
+    }
+    #loginForm input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0 20px;
+      font-size: 1rem;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+    }
+    #loginForm input:focus {
+      border-color: #1e88e5;
+    }
+    #loginForm button {
+      width: 100%;
+      background-color: #1e88e5;
+      color: white;
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #loginForm button:hover {
+      background-color: #1565c0;
+    }
+    #dashboard { display: none; }
+    @media (max-width: 600px) {
+      .container { max-width: 99vw; }
+      .relay-label { font-size: 1rem; }
+      .relay-btn { width: 48px; font-size: 0.97rem; }
+      .group-btn { font-size: 1rem; padding: 10px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">M &amp; L Controller</div>
+  <!-- Login form -->
+  <div id="loginForm">
+    <input type="email" id="email" placeholder="Enter Email" required />
+    <input type="password" id="password" placeholder="Enter Password" required />
+    <button id="loginBtn">Login</button>
+  </div>
+  <!-- Dashboard -->
+  <div class="container" id="dashboard">
+    <!-- Group Buttons -->
+    <div class="group-btn-row">
+      <button class="group-btn" id="m1-on">M1 - On All</button>
+      <button class="group-btn" id="m1-off">M1 - Off All</button>
+    </div>
+    <div class="group-btn-row">
+      <button class="group-btn" id="m2-on">M2 - On All</button>
+      <button class="group-btn" id="m2-off">M2 - Off All</button>
+    </div>
+    <div class="group-btn-row">
+      <button class="group-btn" id="m1m2-on">M1,M2 - On All</button>
+      <button class="group-btn" id="m1m2-off">M1,M2 - Off All</button>
+    </div>
+    <!-- Relay Table -->
+    <table class="relay-table">
+      <tr>
+        <td class="relay-label red">M1 - Red</td>
+        <td><button class="relay-btn" id="M1R-on">ON</button></td>
+        <td><button class="relay-btn" id="M1R-off">OFF</button></td>
+      </tr>
+      <tr>
+        <td class="relay-label yellow">M1 - Yellow</td>
+        <td><button class="relay-btn" id="M1Y-on">ON</button></td>
+        <td><button class="relay-btn" id="M1Y-off">OFF</button></td>
+      </tr>
+      <tr>
+        <td class="relay-label blue">M1 - Blue</td>
+        <td><button class="relay-btn" id="M1B-on">ON</button></td>
+        <td><button class="relay-btn" id="M1B-off">OFF</button></td>
+      </tr>
+      <tr>
+        <td class="relay-label red">M2 - Red</td>
+        <td><button class="relay-btn" id="M2R-on">ON</button></td>
+        <td><button class="relay-btn" id="M2R-off">OFF</button></td>
+      </tr>
+      <tr>
+        <td class="relay-label yellow">M2 - Yellow</td>
+        <td><button class="relay-btn" id="M2Y-on">ON</button></td>
+        <td><button class="relay-btn" id="M2Y-off">OFF</button></td>
+      </tr>
+      <tr>
+        <td class="relay-label blue">M2 - Blue</td>
+        <td><button class="relay-btn" id="M2B-on">ON</button></td>
+        <td><button class="relay-btn" id="M2B-off">OFF</button></td>
+      </tr>
+    </table>
+    <button id="logoutBtn" style="margin:30px auto 0;display:block;background:#555;color:#fff;padding:12px 25px;border:none;border-radius:10px;max-width:300px;width:90%;font-size:16px;cursor:pointer;">Logout</button>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDL3EGyjecqkfttqQ4QAH0wuvW4hCFr5tg",
+      authDomain: "ml-controller-9484a.firebaseapp.com",
+      databaseURL: "https://ml-controller-9484a-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ml-controller-9484a",
+      storageBucket: "ml-controller-9484a.firebasestorage.app",
+      messagingSenderId: "86273908010",
+      appId: "1:86273908010:web:42178ae86cf4d43d4c9253"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Predefined login credentials (can be replaced with your logic)
+    const allowedEmail = "chethan003@gmail.com";
+    const allowedPassword = "abc@123";
+
+    const loginForm = document.getElementById("loginForm");
+    const dashboard = document.getElementById("dashboard");
+    const loginBtn = document.getElementById("loginBtn");
+
+    // Check sessionStorage for login state
+    if (sessionStorage.getItem("ml_logged_in") === "1") {
+      loginForm.style.display = "none";
+      dashboard.style.display = "block";
+      startRelayControl();
+    }
+
+    loginBtn.addEventListener("click", () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        alert("Please enter email and password.");
+        return;
+      }
+
+      // Check hardcoded credentials first
+      if(email === allowedEmail && password === allowedPassword){
+        // Sign in with Firebase
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+            sessionStorage.setItem("ml_logged_in", "1");
+            loginForm.style.display = "none";
+            dashboard.style.display = "block";
+            startRelayControl();
+          })
+          .catch(error => {
+            alert("Firebase login failed: " + error.message);
+          });
+      } else {
+        alert("Invalid email or password.");
+      }
+    });
+
+    function startRelayControl() {
+      const db = firebase.database();
+      // Key mapping
+      const relayKeys = [
+        "M1R", "M1Y", "M1B",
+        "M2R", "M2Y", "M2B",
+        "M1M2", "M1", "M2"
+      ];
+
+      // Individual ON/OFF
+      relayKeys.forEach(key => {
+        document.getElementById(`${key}-on`).onclick = () => db.ref(key).set(false);
+        document.getElementById(`${key}-off`).onclick = () => db.ref(key).set(true);
+      });
+
+      // Group buttons
+      document.getElementById("m1-on").onclick = () => {
+        db.ref("M1R").set(false);
+        db.ref("M1Y").set(false);
+        db.ref("M1B").set(false);
+        db.ref("M1").set(false);
+      };
+      document.getElementById("m1-off").onclick = () => {
+        db.ref("M1R").set(true);
+        db.ref("M1Y").set(true);
+        db.ref("M1B").set(true);
+        db.ref("M1").set(true);
+      };
+      document.getElementById("m2-on").onclick = () => {
+        db.ref("M2R").set(false);
+        db.ref("M2Y").set(false);
+        db.ref("M2B").set(false);
+        db.ref("M2").set(false);
+      };
+      document.getElementById("m2-off").onclick = () => {
+        db.ref("M2R").set(true);
+        db.ref("M2Y").set(true);
+        db.ref("M2B").set(true);
+        db.ref("M2").set(true);
+      };
+      document.getElementById("m1m2-on").onclick = () => {
+        relayKeys.forEach(key => db.ref(key).set(false));
+      };
+      document.getElementById("m1m2-off").onclick = () => {
+        relayKeys.forEach(key => db.ref(key).set(true));
+      };
+    }
+
+    document.getElementById("logoutBtn").onclick = () => {
+      firebase.auth().signOut()
+        .then(() => {
+          sessionStorage.removeItem("ml_logged_in");
+          dashboard.style.display = "none";
+          loginForm.style.display = "block";
+          document.getElementById("email").value = "";
+          document.getElementById("password").value = "";
+        })
+        .catch(error => {
+          alert("Logout failed: " + error.message);
+        });
+    };
+  </script>
+</body>
+</html>
