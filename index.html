@@ -84,15 +84,29 @@
       background: #e0e0e0;
       color: #222;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      outline: none;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
     }
-    .relay-btn.on {
-      background: #43a047;
+    .relay-btn.on-active {
+      background: linear-gradient(90deg, #43a047 80%, #66bb6a 100%);
       color: #fff;
+      box-shadow: 0 2px 12px rgba(67,160,71,0.13);
+      border: 2px solid #388e3c;
     }
-    .relay-btn.off {
-      background: #d32f2f;
+    .relay-btn.off-active {
+      background: linear-gradient(90deg, #d32f2f 80%, #e57373 100%);
       color: #fff;
+      box-shadow: 0 2px 12px rgba(211,47,47,0.13);
+      border: 2px solid #b71c1c;
+    }
+    .relay-btn:not(.on-active):not(.off-active):hover,
+    .relay-btn:not(.on-active):not(.off-active):focus {
+      background: #bdbdbd;
+      color: #1976d2;
     }
     #loginForm {
       max-width: 400px;
@@ -271,6 +285,20 @@
         const btnOff = document.getElementById(`${key}-off`);
         if (btnOn) btnOn.onclick = () => db.ref(key).set(false);
         if (btnOff) btnOff.onclick = () => db.ref(key).set(true);
+
+        // Listen for value changes and update button styles
+        db.ref(key).on('value', snap => {
+          const val = snap.val();
+          if (btnOn && btnOff) {
+            if (val === false) {
+              btnOn.classList.add('on-active');
+              btnOff.classList.remove('off-active');
+            } else {
+              btnOn.classList.remove('on-active');
+              btnOff.classList.add('off-active');
+            }
+          }
+        });
       });
 
       // Group buttons
